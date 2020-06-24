@@ -1,27 +1,36 @@
 import React, {Component} from "react"; 
+import { connect } from 'react-redux';
 import CardList from '../components/CardList';
 import Search from '../components/Search';
 import Scroll from '../components/Scroll';
 import ErrorBoundry from '../components/ErrorBoundry';
+import { setSearchField } from '../actions'; 
 import './app.css'; 
 
+
+const mapStateToProps =(state)=>{
+    return {
+        searchfield: state.searchfield 
+    }
+}
+const mapDispatchToProps=(dispatch)=>{
+    return {withEveryChange: (event)=> dispatch(setSearchField(event.target.value))}
+}
 class App extends Component {
     constructor(){
         super();
         this.state = {
-            robots: [] , 
-            searchfield: ''
+            robots: []
         }
     };
     componentDidMount(){
         fetch('https://jsonplaceholder.typicode.com/users')
         .then( response =>response.json())
         .then( users =>this.setState({robots: users}))}
-    withEveryChange = (event) =>{
-        this.setState({searchfield: event.target.value})
-    }
+
     render(){
-        const { robots, searchfield } = this.state; 
+        const { robots } = this.state; 
+        const { searchfield, withEveryChange } = this.props; 
         const filtrador = robots.filter(robot =>{
             return robot.name.toLowerCase().includes(searchfield.toLowerCase())
         })
@@ -31,10 +40,10 @@ class App extends Component {
             return(
                 <div className= "tc">
                     <h1 className= "f1 dim">RoboFriends</h1>
-                    <Search searchChange = {this.withEveryChange}/>
+                    <Search searchChange = { withEveryChange }/>
                     <Scroll>
                         <ErrorBoundry>
-                            <CardList robots = {filtrador}/>
+                            <CardList robots = { filtrador }/>
                         </ErrorBoundry>
                     </Scroll>
                 </div>
@@ -42,4 +51,4 @@ class App extends Component {
         }
     }
 }
-export default App; 
+export default connect(mapStateToProps, mapDispatchToProps)(App); 
