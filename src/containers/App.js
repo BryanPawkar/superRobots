@@ -1,40 +1,48 @@
 import React, {Component} from "react"; 
 import { connect } from 'react-redux';
 import CardList from '../components/CardList';
+import KittyList from '../components/KittyList'; 
 import Search from '../components/Search';
 import Scroll from '../components/Scroll';
 import ErrorBoundry from '../components/ErrorBoundry';
-import { setSearchField } from '../actions'; 
+import { setSearchField, requestRobots, requestKittys } from '../actions'; 
 import './app.css'; 
 
 
 const mapStateToProps =(state)=>{
     return {
-        searchfield: state.searchfield 
+        searchfield: state.searchToys.searchfield,
+        robots: state.requestRobots.robots,
+        isPending: state.requestRobots.isPending,
+        error: state.requestRobots.error,
+        kittys: state.requestKittys.kittys,
+        isPending: state.requestKittys.kitty,
+        error: state.requestKittys.error
     }
 }
 const mapDispatchToProps=(dispatch)=>{
-    return {withEveryChange: (event)=> dispatch(setSearchField(event.target.value))}
+    return {
+        withEveryChange: (event)=> dispatch(setSearchField(event.target.value)),
+        onRequestRobots: () => dispatch(requestRobots()),
+        onRequestKittys: () => dispatch(requestKittys())
+    }
 }
 class App extends Component {
-    constructor(){
-        super();
-        this.state = {
-            robots: []
-        }
-    };
+    
     componentDidMount(){
-        fetch('https://jsonplaceholder.typicode.com/users')
-        .then( response =>response.json())
-        .then( users =>this.setState({robots: users}))}
+        this.props.onRequestRobots();
+        this.props.onRequestKittys(); 
+    }
 
     render(){
-        const { robots } = this.state; 
-        const { searchfield, withEveryChange } = this.props; 
+        const { searchfield, withEveryChange, robots, kittys, isPending } = this.props; 
         const filtrador = robots.filter(robot =>{
             return robot.name.toLowerCase().includes(searchfield.toLowerCase())
         })
-        if (!robots.length){
+        const kittyFiltrador = kittys.filter(kitty =>{
+            return kitty.name.toLowerCase().includes(searchfield.toLowerCase())
+        })
+        if (isPending){
             return <h1 className= "tc">Loading...</h1>
         }else{
             return(
@@ -46,6 +54,12 @@ class App extends Component {
                             <CardList robots = { filtrador }/>
                         </ErrorBoundry>
                     </Scroll>
+                    <h1 className= "f1 pa5 kitty" >Kitty Friends</h1>
+                    <Scroll>
+                        <ErrorBoundry>
+                            <KittyList kittys = { kittyFiltrador} />
+                        </ErrorBoundry>
+                    </Scroll>    
                 </div>
             )
         }

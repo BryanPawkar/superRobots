@@ -4,6 +4,13 @@
     font-weight: normal;
     src: local('SEGA LOGO FONT'), url('SEGA.woff') format('woff');
     }
+@font-face {
+    font-family: 'Faustpress Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Faustpress Regular'), url('Faustpress-Rxy3.woff') format('woff');
+}
+
 h1{
     font-family: 'SEGA LOGO FONT';
     font-weight: 100; 
@@ -18,4 +25,19 @@ input{
     border-radius: 5px; 
     border-color: gainsboro; 
     margin-bottom: 2em; 
+}
+.kitty{
+    font-family: 'Faustpress Regular';
+    font-weight: 800; 
+    color: yellow;
+    font-size: 5em;  
+    margin-bottom: 0; 
+    filter: drop-shadow(0px 15px 4px #0000005c);
+    box-shadow: 0px 15px 15px 5px #0000007d; 
+}
+.kittys{
+    font-family: 'Faustpress Regular';
+    font-weight: 100; 
+    color: yellow;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.531); 
 }
