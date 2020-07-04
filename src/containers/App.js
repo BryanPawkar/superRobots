@@ -47,7 +47,7 @@ class App extends Component {
         }else{
             return(
                 <div className= "tc">
-                    <h1 className= "f1 dim">RoboFriends</h1>
+                    <h1 className= "f1 dim">RoboFriends 1.0</h1>
                     <Search searchChange = { withEveryChange }/>
                     <Scroll>
                         <ErrorBoundry>
